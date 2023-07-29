@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import SortingPanel from "../components/SortingPanel";
 import UserCardList from "../components/UserCardList";
+import Pagination from "../components/Pagination";
 import GithubService from "../service/GithubService";
 
 const HomePage = () => {
   const [users, setUsers] = useState([]);
   const [resCount, setResCount] = useState(0);
+  const [perPage, setPerPage] = useState(10);
 
   const [username, setUsername] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +25,13 @@ const HomePage = () => {
     const sorting = sortingArr.find((el) => el.id === currentSort);
     const { sort, order } = sorting;
 
-    const result = await GithubService.searchUsers(username, sort, order);
+    const result = await GithubService.searchUsers(
+      username,
+      sort,
+      order,
+      1,
+      perPage
+    );
     setResCount(result.total_count);
     setUsers(result.items);
   };
@@ -33,13 +41,22 @@ const HomePage = () => {
       const sorting = sortingArr.find((el) => el.id === currentSort);
       const { sort, order } = sorting;
 
-      const result = await GithubService.searchUsers(username, sort, order);
+      const result = await GithubService.searchUsers(
+        username,
+        sort,
+        order,
+        currentPage,
+        perPage
+      );
       console.log(result);
+
       setResCount(result.total_count);
       setUsers(result.items);
     };
 
-    fetchUsers();
+    if (username.length > 0) {
+      fetchUsers();
+    }
   }, [currentSort, currentPage]);
 
   return (
@@ -56,6 +73,15 @@ const HomePage = () => {
         setCurrentSort={setCurrentSort}
       />
       <UserCardList users={users} />
+
+      {resCount > perPage && (
+        <Pagination
+          resCount={resCount}
+          perPage={perPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </div>
   );
 };
