@@ -39,7 +39,6 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
       <List>
         <button disabled={currentPage === 1}>&#10094; prev</button>
 
-        {/* case 1 */}
         {maxPages < 8 && (
           <div>
             {[...Array(maxPages)].map((el, i) => (
@@ -53,7 +52,6 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
           </div>
         )}
 
-        {/* case 2 */}
         {maxPages > 7 && (
           <div>
             {currentPage > 4 && (
@@ -67,7 +65,7 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
                 <button disabled>...</button>
               </>
             )}
-            
+
             {[...Array(maxPages)].map((el, i) => {
               const isStart = currentPage < 5;
               const isEnd = currentPage >= maxPages - 4;
@@ -102,6 +100,7 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
                   </button>
                 );
               }
+              return <></>;
             })}
 
             {currentPage < maxPages - 4 && maxPages && (
