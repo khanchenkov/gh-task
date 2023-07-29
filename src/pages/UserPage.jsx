@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   border-radius: 5px;
   border: 1px solid #5c656d;
-  padding: 40px 20px;
+  padding: 40px 100px 40px 40px;
 `;
 
 const BackButton = styled.div`
@@ -24,11 +24,12 @@ const BackButton = styled.div`
 
 const UserInfo = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   img {
     border-radius: 50%;
     width: 300px;
     height: 300px;
-    margin-right: 150px;
   }
 `;
 
@@ -53,7 +54,7 @@ const UserPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const user = await GithubService.getUserByLogin(username);
-      const isObjEmpty = !!Object.keys(user).length;
+      const isObjEmpty = !!!Object.keys(user).length || user.message === "Not Found";
       setIsEmpty(isObjEmpty);
       setUserData(user);
     };
