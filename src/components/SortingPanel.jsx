@@ -69,12 +69,7 @@ const List = styled.ul`
   }
 `;
 
-const SortingPanel = ({
-  resCount,
-  sortingArr,
-  currentSort,
-  setCurrentSort,
-}) => {
+const SortingPanel = ({ resCount, sortingArr, currentSort, setCurrentSort }) => {
   const [isShown, setIsShown] = useState(false);
 
   const sortHandler = (id) => {
@@ -99,11 +94,7 @@ const SortingPanel = ({
               {sortingArr.map(({ id, title }) => (
                 <li key={id}>
                   <label onChange={() => sortHandler(id)}>
-                    <input
-                      type="radio"
-                      name="sort"
-                      checked={currentSort === id}
-                    />
+                    <input type="radio" name="sort" checked={currentSort === id} />
                     <div>{title}</div>
                   </label>
                 </li>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import getMaxPages from "../util/getMaxPages";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,24 +32,20 @@ const List = styled.div`
 `;
 
 const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
-  const maxPagesAll = resCount ? Math.ceil(resCount / perPage) : 0;
-  const maxPages = maxPagesAll > 100 ? 100 : maxPagesAll;
-
-  const handlePagination = (page) => {
-    setCurrentPage(page);
-  };
+  const maxPages = getMaxPages(resCount, perPage);
 
   return (
     <Wrapper>
       <List>
         <button disabled={currentPage === 1}>&#10094; prev</button>
 
+        {/* case 1 */}
         {maxPages < 8 && (
           <div>
             {[...Array(maxPages)].map((el, i) => (
               <button
                 className={currentPage === i + 1 ? "active" : ""}
-                onClick={() => handlePagination(i + 1)}
+                onClick={() => setCurrentPage(i + 1)}
               >
                 {i + 1}
               </button>
@@ -56,20 +53,21 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
           </div>
         )}
 
+        {/* case 2 */}
         {maxPages > 7 && (
           <div>
             {currentPage > 4 && (
               <>
                 <button
                   className={currentPage === 1 ? "active" : ""}
-                  onClick={() => handlePagination(1)}
+                  onClick={() => setCurrentPage(1)}
                 >
                   1
                 </button>
                 <button disabled>...</button>
               </>
             )}
-
+            
             {[...Array(maxPages)].map((el, i) => {
               const isStart = currentPage < 5;
               const isEnd = currentPage >= maxPages - 4;
@@ -78,33 +76,27 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
                 return (
                   <button
                     className={currentPage === i + 1 ? "active" : ""}
-                    onClick={() => handlePagination(i + 1)}
+                    onClick={() => setCurrentPage(i + 1)}
                   >
                     {i + 1}
                   </button>
                 );
               }
-
               if (isEnd && i + 1 > maxPages - 7) {
                 return (
                   <button
                     className={currentPage === i + 1 ? "active" : ""}
-                    onClick={() => handlePagination(i + 1)}
+                    onClick={() => setCurrentPage(i + 1)}
                   >
                     {i + 1}
                   </button>
                 );
               }
-
-              if (
-                !isStart &&
-                i + 1 >= currentPage - 2 &&
-                i + 1 <= currentPage + 2
-              ) {
+              if (!isStart && i + 1 >= currentPage - 2 && i + 1 <= currentPage + 2) {
                 return (
                   <button
                     className={currentPage === i + 1 ? "active" : ""}
-                    onClick={() => handlePagination(i + 1)}
+                    onClick={() => setCurrentPage(i + 1)}
                   >
                     {i + 1}
                   </button>
@@ -117,7 +109,7 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
                 <button disabled>...</button>
                 <button
                   className={currentPage === maxPages ? "active" : ""}
-                  onClick={() => handlePagination(maxPages)}
+                  onClick={() => setCurrentPage(maxPages)}
                 >
                   {maxPages}
                 </button>
@@ -125,7 +117,6 @@ const Pagination = ({ resCount, perPage, currentPage, setCurrentPage }) => {
             )}
           </div>
         )}
-
         <button disabled={currentPage === maxPages}>next &#10095;</button>
       </List>
     </Wrapper>

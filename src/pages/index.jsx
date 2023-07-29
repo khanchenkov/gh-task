@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import UserPage from "./UserPage";
 
-const index = () => {
+const Pages = () => {
   return (
     <Router>
       <Routes>
@@ -14,4 +14,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Pages;

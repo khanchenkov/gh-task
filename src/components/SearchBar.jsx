@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import GithubService from "../service/GithubService";
 
 const SearchForm = styled.form`
   background-color: #010508;
@@ -37,6 +36,7 @@ const SearchBar = ({ username, setUsername, formHandler }) => {
   return (
     <SearchForm onSubmit={(e) => formHandler(e)}>
       <input
+        data-testid="search-bar"
         type="text"
         placeholder="Search repos"
         value={username}

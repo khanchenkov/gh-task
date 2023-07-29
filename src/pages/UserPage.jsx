@@ -46,12 +46,15 @@ const Username = styled.p`
 `;
 
 const UserPage = () => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({});
   const { username } = useParams();
+  const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
       const user = await GithubService.getUserByLogin(username);
+      const isObjEmpty = !!Object.keys(user).length;
+      setIsEmpty(isObjEmpty);
       setUserData(user);
     };
 
@@ -62,10 +65,12 @@ const UserPage = () => {
     <div>
       <BackButton>
         <Link to="/">Back</Link>
+        <h1>User Info:</h1>
       </BackButton>
 
       <Wrapper>
-        {userData && (
+        {isEmpty && <h1>User not found.</h1>}
+        {!isEmpty && (
           <UserInfo>
             <img src={userData.avatar_url} alt="" />
             <div>

@@ -8,7 +8,7 @@ import GithubService from "../service/GithubService";
 const HomePage = () => {
   const [users, setUsers] = useState([]);
   const [resCount, setResCount] = useState(0);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage] = useState(10);
 
   const [username, setUsername] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,13 +25,7 @@ const HomePage = () => {
     const sorting = sortingArr.find((el) => el.id === currentSort);
     const { sort, order } = sorting;
 
-    const result = await GithubService.searchUsers(
-      username,
-      sort,
-      order,
-      1,
-      perPage
-    );
+    const result = await GithubService.searchUsers(username, sort, order, 1, perPage);
     setResCount(result.total_count);
     setUsers(result.items);
   };
@@ -41,13 +35,7 @@ const HomePage = () => {
       const sorting = sortingArr.find((el) => el.id === currentSort);
       const { sort, order } = sorting;
 
-      const result = await GithubService.searchUsers(
-        username,
-        sort,
-        order,
-        currentPage,
-        perPage
-      );
+      const result = await GithubService.searchUsers(username, sort, order, currentPage, perPage);
       console.log(result);
 
       setResCount(result.total_count);
@@ -57,15 +45,13 @@ const HomePage = () => {
     if (username.length > 0) {
       fetchUsers();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSort, currentPage]);
 
   return (
     <div>
-      <SearchBar
-        formHandler={formHandler}
-        username={username}
-        setUsername={setUsername}
-      />
+      <h1>Homepage</h1>
+      <SearchBar formHandler={formHandler} username={username} setUsername={setUsername} />
       <SortingPanel
         resCount={resCount}
         sortingArr={sortingArr}
@@ -73,7 +59,6 @@ const HomePage = () => {
         setCurrentSort={setCurrentSort}
       />
       <UserCardList users={users} />
-
       {resCount > perPage && (
         <Pagination
           resCount={resCount}
